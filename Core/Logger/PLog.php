@@ -43,7 +43,7 @@ class PLog
     public static function getStep()
     {
         $inst = self::getInstance();
-        return (isset($inst->plog_data['step']) ? $inst->plog_data['step'] : '-';
+        return (isset($inst->plog_data['step']) ? $inst->plog_data['step'] : '-');
     }
 
     public static function db($ref, $query, $params)

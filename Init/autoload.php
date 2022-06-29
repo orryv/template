@@ -1,1 +1,1 @@
-<?php require(BASE_DIR.'/Init/ErrorFunctions.php');?>
+<?php require(BASE_DIR.'/Init/ErrorFunctions.php');require(BASE_DIR.'/Init/StringFunctions.php');?>

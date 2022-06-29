@@ -1,6 +1,4 @@
 <?php
-
-phpinfo();exit;
 	
 	define('BASE_DIR', __DIR__);
 

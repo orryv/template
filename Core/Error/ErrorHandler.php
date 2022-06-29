@@ -71,14 +71,10 @@ class ErrorHandler
                     }
                 }
             } else {
-                echo ((PLog::getStep()) ?? '' );
-
-                /*
                 $msg = '<div style="background-color:red;padding:5px">Error: <b>'.$this->message.'</b>';
                 $msg.= '<br>File: '.$this->file.':'.$this->line;
                 $msg.= '<br>PLog Step: '.PLog::getStep();
-                */
-                /*
+                
                 $d = PLog::getDB();
                 if(empty($d))
                     $msg.= '<br>PLog DB: None';
@@ -95,10 +91,8 @@ class ErrorHandler
                         $msg.= '<meta http-equiv="refresh" content="10">';
                 }
                 $msg.= $buffer;
-                */
             }
         } 
-        /*
         else {
 
             $day = Time::epochToDay(Time::getDayEpoch(time(), DB_TIMEZONE));
@@ -141,8 +135,6 @@ class ErrorHandler
             }
         }
         return $msg;
-        */
-        return 'test';
     }
 }
 
