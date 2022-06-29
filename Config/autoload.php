@@ -1,0 +1,1 @@
+<?php require(BASE_DIR.'/Config/Mysql.php');?>
