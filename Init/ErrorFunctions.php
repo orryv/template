@@ -26,7 +26,7 @@
 
     function error_handler($number, $message, $file, $line, $context = null)
     {
-        die(new ErrorHandler($message, 0, $number, $file, $line));
+        die(new ErrorHandler($message, 0, $number, $file, $line, $context));
     }
 
     function exception_handler($exception)

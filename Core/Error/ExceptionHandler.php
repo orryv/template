@@ -17,6 +17,16 @@ class ExceptionHandler{
    
     public function __toString()
     {
+
+        $em = new ErrorMessage(
+            'Exception',
+            $this->exception->getMessage(),
+            $this->exception->getFile(),
+            $this->exception->getLine(),
+            $this->exception->getTrace()
+        );
+        return $em->message();
+
         $buffer = '';
         if (ob_get_length())
             $buffer = ob_end_clean();

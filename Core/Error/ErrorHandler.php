@@ -26,6 +26,14 @@ class ErrorHandler
     public function __toString()
     {
         
+        $em = new ErrorMessage(
+            'Error',
+            $this->message,
+            $this->file,
+            $this->line,
+        );
+        return $em->message();
+
         $buffer = '';
         if (ob_get_length())
             $buffer = ob_end_clean();
