@@ -1,4 +1,6 @@
 <?php
+
+	use Core\App;
 	
 	define('BASE_DIR', __DIR__);
 
@@ -12,7 +14,12 @@
 
 	require 'vendor/autoload.php';
 
-	
+	new App();
+
+	if(DEV_MODE){
+		
+	}
+
 
 
 ?>
