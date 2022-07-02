@@ -95,7 +95,7 @@ class RoutesCache
 					$current_routes[$config['routes']] = $f;
 				}
 
-				pp($current_routes);
+				//pp($current_routes);
 
 				array_map( 'unlink', array_filter((array) glob(BASE_DIR.'/Cache/Routes/*') ) );
 				foreach ($current_routes as $route_name => $route_path) {
@@ -113,7 +113,7 @@ class RoutesCache
 
 		
 
-		pp($cache);
+		//pp($cache);
 		//pp($files);
 	}
 }

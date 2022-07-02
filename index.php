@@ -16,6 +16,10 @@
 
 	require 'vendor/autoload.php';
 
+	if(DEV_MODE || DEBUG_PRODUCTION_SERVER){
+		require 'AssertConfig.php';
+	}
+
 	new App();
 
 	if(DEV_MODE){
