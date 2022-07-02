@@ -1,6 +1,8 @@
 <?php
 
 	use Core\App;
+
+	ob_start();
 	
 	define('BASE_DIR', __DIR__);
 
@@ -17,7 +19,7 @@
 	new App();
 
 	if(DEV_MODE){
-		
+
 	}
 
 
