@@ -44,6 +44,9 @@ class RoutesCache
 
 		$files = Folder::getFiles(BASE_DIR.DS.'Views'.DS.'html'.DS.'src');
 
+		// Delete Cache/Routes folder contents
+		array_map( 'unlink', array_filter((array) glob(BASE_DIR.'/Cache/Routes/*') ) );
+
 		foreach ($files as $file) {
 			if(substr($file, -4) !== '.php')
 				continue;
@@ -80,6 +83,8 @@ class RoutesCache
 						
 						$cache['routes'][$value] = $f;
 						$current_routes[$value] = $f;
+
+						file_put_contents(BASE_DIR.'/Cache/Routes/'.$value.'__config.php', json_encode($config));
 					}
 				} else {
 					$config['routes'] = (substr($config['routes'], 0, 1) === '/') 
@@ -93,12 +98,17 @@ class RoutesCache
 					
 					$cache['routes'][$config['routes']] = $f;
 					$current_routes[$config['routes']] = $f;
+					file_put_contents(BASE_DIR.'/Cache/Routes/'.$config['routes'].'__config.php', json_encode($config));
 				}
+
+
 
 				//pp($current_routes);
 
-				array_map( 'unlink', array_filter((array) glob(BASE_DIR.'/Cache/Routes/*') ) );
+				
 				foreach ($current_routes as $route_name => $route_path) {
+
+
 
 					$route_path = str_replace('\\','\'.DS.\'' , str_replace('/','\'.DS.\'' , $route_path));
 

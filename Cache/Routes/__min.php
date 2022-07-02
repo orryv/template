@@ -1,1 +1,0 @@
-<?php require BASE_DIR.DS.'Views'.DS.'html'.DS.'min'.DS.'home'.DS.'home.php'; ?>

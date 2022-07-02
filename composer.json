@@ -5,9 +5,8 @@
             "Init/autoload.php"
         ],
         "psr-4": {
-            "Config\\": "Config/",
             "Core\\": "Core/",
-            "Init\\": "Init/"
+            "Controllers\\": "Controllers/"
         }
     }
 }
