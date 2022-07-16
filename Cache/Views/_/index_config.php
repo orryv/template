@@ -1,11 +1,9 @@
 <?php
-	
-	$config = [
-		'controller' => 'Home/Home',
+	return [
 		'template' => 'main',
 		'routes' => [
 			'/',
-			'/home',
+			'/home/*',
 			'index'
 		],
 		'canonical_route' => '',
@@ -22,25 +20,5 @@
 			'main',
 			'_self'
 		],
-
-
 	];
-
-	pp(get_defined_vars());
-	exit;
-	$vars = get_defined_vars();
-
-	pp($vars);
-	exit;
-
-	if(isset($page_date)){
-		'ISsET';
-	}
-
-	//echo $$value;
-	//pp($page_data);
-?> <h1>THIS IS THE HOMEPAGE</h1> <?php 
-		pp(get_defined_vars());
-?> <?php
- 	//pp($value) 
- ?>
+?>

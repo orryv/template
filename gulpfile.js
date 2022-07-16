@@ -29,17 +29,17 @@ function getProjectVersion() {
 const version = getProjectVersion();
 */
 function jsMinify(){
-    return (src('./views/js/src/**/*.js')
+    return (src('./Views/**/*.js')
         .pipe(plumber())
         .pipe(cache('jsMinify'))
         .pipe(minify({ext:{min:'.min.js'}, noSource:true}))
-        .pipe(dest('./views/js/min/'))
-        .pipe(dest('./data/cdn/js/'))
+        .pipe(dest('./Cache/Views/'))
+        .pipe(dest('./CDN/'))
         .pipe(plumber.stop()));
 };
 
 function esLint(){
-    return (src('./views/js/src/**/*.js')
+    return (src('./Views/**/*.js')
         .pipe(cache('esLint'))
         .pipe(eslint({
             envs:[
@@ -53,13 +53,13 @@ function esLint(){
         }))
         .pipe(plumber())
         .pipe(eslint.format())
-        .pipe(eslint.failAfterError())
+        //.pipe(eslint.failAfterError())
         /*.on("error", notify.onError('JS Error'))*/);
 };
 
 
 function cssMinify(){
-    return (src('./views/css/src/**/*.{scss,css}')
+    return (src('./Views/**/*.{scss,css}')
         .pipe(plumber())
         .pipe(cache('cssMinify'))
         .pipe(sass().on('error', sass.logError))
@@ -68,12 +68,12 @@ function cssMinify(){
         }))
         .pipe(cleanCSS({compatibility: '*'}))
         .pipe(plumber.stop())
-        .pipe(dest('./views/css/min/'))
-        .pipe(dest('./data/cdn/css/')));
+        .pipe(dest('./Cache/Views/'))
+        .pipe(dest('./CDN/')));
 };
 
 function scssLint(){
-    return (src('./views/css/src/**/*.{scss,css}')
+    return (src('./Views/**/*.{scss,css}')
         .pipe(cache('scssLint'))
         .pipe(sassLint({
             options: {
@@ -91,12 +91,12 @@ function scssLint(){
 }
 
 function htmlMinify(){
-    return (src('./views/html/src/**/*.{php,html}')
+    return (src(['./Views/**/*.{php,html}', './Views/**/*_config.php', './Views/**/*_controller.php'])
         .pipe(plumber())
         .pipe(cache('htmlMinify'))
         .pipe(htmlmin({ collapseWhitespace: true }))
         .pipe(plumber.stop())
-        .pipe(dest('./views/html/min/')));
+        .pipe(dest('./Cache/Views/')));
 };
 
 function liveReload(){
@@ -118,9 +118,9 @@ task("scssLint", scssLint);
 task("htmlMinify", htmlMinify);
 
 task("watch", () => {
-    watch('./views/js/src/**/*.js', {ignoreInitial:false}, series(jsMinify, esLint));
-    watch('./views/css/src/**/*.{scss,css}', {ignoreInitial:false}, series(cssMinify, scssLint));
-    watch('./views/html/src/**/*.{php,html}', {ignoreInitial:false}, htmlMinify);
+    watch('./Views/**/*.js', {ignoreInitial:false}, series(jsMinify, esLint));
+    watch('./Views/**/*.{scss,css}', {ignoreInitial:false}, series(cssMinify, scssLint));
+    watch('./Views/**/*.{php,html}', {ignoreInitial:false}, htmlMinify);
     livereload.listen();
     watch('./', {ignoreInitial:false}, liveReload);
 });
