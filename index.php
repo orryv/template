@@ -9,7 +9,7 @@
 	require 'Config/State.php';
 	
 	if(DEV_MODE){
-		require BASE_DIR.'/Cache/CreateAutoloaders.php';
+		require BASE_DIR.'/Scripts/CreateAutoloaders.php';
 	}
 
 	define('API_REQUEST', false);
