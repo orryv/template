@@ -1,0 +1,1 @@
+<?php if(REQUEST_URI === '') require 'C:\xampp2\htdocs\template\Views\_\index.php'; elseif(substr(REQUEST_URI, 0, 4) === 'home') require 'C:\xampp2\htdocs\template\Views\_\index.php'; elseif(REQUEST_URI === 'index') require 'C:\xampp2\htdocs\template\Views\_\index.php';  ?>

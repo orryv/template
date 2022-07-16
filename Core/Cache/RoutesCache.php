@@ -19,7 +19,7 @@ class RoutesCache
 			'js' => []
 		];
 
-		$files = Folder::getFiles(BASE_DIR.DS.'Views'.DS.'css'.DS.'min');
+		$files = Folder::getFiles(BASE_DIR.DS.'Views');
 
 		foreach ($files as $file) {
 			if(substr($file, -4) !== '.css')
@@ -31,7 +31,7 @@ class RoutesCache
 		}
 
 
-		$files = Folder::getFiles(BASE_DIR.DS.'Views'.DS.'js'.DS.'min');
+		//$files = Folder::getFiles(BASE_DIR.DS.'Views'.DS.'js'.DS.'min');
 
 		foreach ($files as $file) {
 			if(substr($file, -7) !== '.min.js')
@@ -42,15 +42,41 @@ class RoutesCache
 			$cache['js'][substr($f, 0, -7)] = $f;
 		}
 
-		$files = Folder::getFiles(BASE_DIR.DS.'Views'.DS.'html'.DS.'src');
+		//$files = Folder::getFiles(BASE_DIR.DS.'Views'.DS.'html'.DS.'src');
 
 		// Delete Cache/Routes folder contents
-		array_map( 'unlink', array_filter((array) glob(BASE_DIR.'/Cache/Routes/*') ) );
+		array_map( 'unlink', array_filter((array) glob(BASE_DIR.DS.'Cache'.DS.'Routes'.DS.'*') ) );
 
+
+		$folder = [];
 		foreach ($files as $file) {
 			if(substr($file, -4) !== '.php')
 				continue;
 
+			// get file name without path
+			$file_name = substr($file, strrpos($file, DS) + 1);
+
+			// if first character of $file is an _ continue
+			if(substr($file_name, 0, 1) === '_')
+				continue;
+
+			
+
+			if(strpos($file, '/_components'))
+				continue;
+
+			$folder_name = substr($file, 0, strrpos($file, DS));
+
+			// if folder name is not in $folder array, add it
+			if(!in_array($folder_name, $folder))
+				$folder[] = $folder_name;
+
+
+
+
+			// exit;
+
+			/*
 			$f = substr($file, strlen(BASE_DIR)+16);
 
 			if(substr($f, 0, strlen('components')) === 'components'){
@@ -119,9 +145,63 @@ class RoutesCache
 					file_put_contents(BASE_DIR.'/Cache/Routes/'.$route_name.'__src.php', $file_content);			
 				}
 			}
+			*/
 		}
 
-		
+		foreach($folder as $folder){
+			echo $folder.'<br>';
+
+			foreach(Folder::getFiles($folder) as $file){
+				if(substr($file, -4) !== '.php')
+					continue;
+
+				if(substr($file, -11) === '_config.php')
+					continue;
+
+				if(substr($file, -15) === '_controller.php')
+					continue;
+
+				$file_name = substr($file, strrpos($file, DS) + 1);
+
+				$file_name_ext = substr($file_name, 0, -4);
+
+				if(!file_exists($folder.DS.$file_name_ext.'_config.php'))
+					throw new FileNotFoundException('The config file "'.$folder.DS.$file_name_ext.'_config.php" was not found.');
+
+				$config = require $folder.DS.$file_name_ext.'_config.php';
+
+				foreach($config['routes'] as $route){
+					if(substr($route, 0, 1) === '/')
+						$route = substr($route, 1);
+
+					if(substr($route, -1) === '/')
+						$route = substr($route, 0, -1);
+					$cache['routes'][$route] = $file;
+				}
+				
+			}
+
+		}
+
+		pp($cache);
+
+		$html_cache = '<?php ';
+		$else = '';
+		foreach($cache['routes'] as $route => $file){
+			if(substr($route, -1) === '*'){
+				if(substr($route, -2) === '/*')
+					$route = substr($route, 0, -2);
+				else
+					$route = substr($route, 0, -1);
+				$html_cache .= $else.'if(substr(REQUEST_URI, 0, '.strlen($route).') === \''.$route.'\') require \''.$file.'\'; ';
+			} else {
+				$html_cache .= $else.'if(REQUEST_URI === \''.$route.'\') require \''.$file.'\'; ';
+			}
+			$else = 'else';
+		}
+		file_put_contents(BASE_DIR.'/Cache/Routes/html.php', $html_cache.' ?>');
+
+		exit;
 
 		//pp($cache);
 		//pp($files);
